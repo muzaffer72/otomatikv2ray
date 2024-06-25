@@ -39,56 +39,56 @@ header_type_list=(
     wireguard
 )
 mainmenu=(
-    "添加配置"
-    "更改配置"
-    "查看配置"
-    "删除配置"
-    "运行管理"
-    "更新"
-    "卸载"
-    "帮助"
-    "其他"
-    "关于"
+    "Konfigürasyon Ekle"
+    "Konfigürasyonu Değiştir"
+    "Konfigürasyonu Görüntüle"
+    "Konfigürasyonu Sil"
+    "Çalıştırma Yönetimi"
+    "Güncelle"
+    "Kaldır"
+    "Yardım"
+    "Diğer"
+    "Hakkında"
 )
 info_list=(
-    "协议 (protocol)"
-    "地址 (address)"
-    "端口 (port)"
-    "用户ID (id)"
-    "传输协议 (network)"
-    "伪装类型 (type)"
-    "伪装域名 (host)"
-    "路径 (path)"
-    "传输层安全 (TLS)"
+    "Protokol (protocol)"
+    "Adres (address)"
+    "Port (port)"
+    "Kullanıcı ID (id)"
+    "Transfer Protokolü (network)"
+    "Kamuflaj Tipi (type)"
+    "Kamuflaj Alan Adı (host)"
+    "Yol (path)"
+    "Transfer Katmanı Güvenliği (TLS)"
     "mKCP seed"
-    "密码 (password)"
-    "加密方式 (encryption)"
-    "链接 (URL)"
-    "目标地址 (remote addr)"
-    "目标端口 (remote port)"
-    "流控 (flow)"
+    "Şifre (password)"
+    "Şifreleme Yöntemi (encryption)"
+    "Bağlantı (URL)"
+    "Hedef Adres (remote addr)"
+    "Hedef Port (remote port)"
+    "Akış Kontrolü (flow)"
     "SNI (serverName)"
-    "指纹 (Fingerprint)"
-    "公钥 (Public key)"
-    "用户名 (Username)"
+    "Parmak İzi (Fingerprint)"
+    "Genel Anahtar (Public key)"
+    "Kullanıcı Adı (Username)"
 )
 change_list=(
-    "更改协议"
-    "更改端口"
-    "更改域名"
-    "更改路径"
-    "更改密码"
-    "更改 UUID"
-    "更改加密方式"
-    "更改伪装类型"
-    "更改目标地址"
-    "更改目标端口"
-    "更改密钥"
-    "更改 SNI (serverName)"
-    "更改动态端口"
-    "更改伪装网站"
-    "更改 mKCP seed"
-    "更改用户名 (Username)"
+    "Protokolü Değiştir"
+    "Portu Değiştir"
+    "Alan Adını Değiştir"
+    "Yolu Değiştir"
+    "Şifreyi Değiştir"
+    "UUID Değiştir"
+    "Şifreleme Yöntemini Değiştir"
+    "Kamuflaj Tipini Değiştir"
+    "Hedef Adresi Değiştir"
+    "Hedef Portu Değiştir"
+    "Anahtarı Değiştir"
+    "SNI'yi Değiştir (serverName)"
+    "Dinamik Portu Değiştir"
+    "Kamuflaj Sitesini Değiştir"
+    "mKCP seed Değiştir"
+    "Kullanıcı Adını Değiştir (Username)"
 )
 servername_list=(
     www.amazon.com
@@ -100,7 +100,7 @@ servername_list=(
 )
 
 is_random_ss_method=${ss_method_list[$(shuf -i 0-${#ss_method_list[@]} -n1) - 1]}
-is_random_header_type=${header_type_list[$(shuf -i 1-5 -n1)]} # random dont use none
+is_random_header_type=${header_type_list[$(shuf -i 1-5 -n1)]} # random none kullanma
 is_random_servername=${servername_list[$(shuf -i 0-${#servername_list[@]} -n1) - 1]}
 
 msg() {
@@ -111,10 +111,10 @@ msg_ul() {
     echo -e "\e[4m$@\e[0m"
 }
 
-# pause
+# duraklat
 pause() {
     echo
-    echo -ne "按 $(_green Enter 回车键) 继续, 或按 $(_red Ctrl + C) 取消."
+    echo -ne "Devam etmek için $(_green Enter tuşuna) basın, veya iptal etmek için $(_red Ctrl + C) tuşlarına basın."
     read -rs -d $'\n'
     echo
 }
@@ -128,7 +128,7 @@ get_ip() {
     export "$(_wget -4 -qO- https://one.one.one.one/cdn-cgi/trace | grep ip=)" &>/dev/null
     [[ ! $ip ]] && export "$(_wget -6 -qO- https://one.one.one.one/cdn-cgi/trace | grep ip=)" &>/dev/null
     [[ ! $ip ]] && {
-        err "获取服务器 IP 失败.."
+        err "Sunucu IP'si alınamadı.."
     }
 }
 
@@ -137,7 +137,7 @@ get_port() {
     while :; do
         ((is_count++))
         if [[ $is_count -ge 233 ]]; then
-            err "自动获取可用端口失败次数达到 233 次, 请检查端口占用情况."
+            err "Otomatik kullanılabilir port alma denemeleri 233 defaya ulaştı, lütfen port kullanımı durumunu kontrol edin."
         fi
         tmp_port=$(shuf -i 445-65535 -n 1)
         [[ ! $(is_test port_used $tmp_port) && $tmp_port != $port ]] && break
@@ -202,18 +202,18 @@ is_port_used() {
         return
     fi
     is_cant_test_port=1
-    msg "$is_warn 无法检测端口是否可用."
-    msg "请执行: $(_yellow "${cmd} update -y; ${cmd} install net-tools -y") 来修复此问题."
+    msg "$is_warn Portun kullanılıp kullanılmadığını kontrol edemiyorum."
+    msg "Bu sorunu çözmek için: $(_yellow "${cmd} update -y; ${cmd} install net-tools -y") komutunu çalıştırın."
 }
 
-# ask input a string or pick a option for list.
+# bir dizi veya listeden seçenek belirleyin.
 ask() {
     case $1 in
     set_ss_method)
         is_tmp_list=(${ss_method_list[@]})
         is_default_arg=$is_random_ss_method
-        is_opt_msg="\n请选择加密方式:\n"
-        is_opt_input_msg="(默认\e[92m $is_default_arg\e[0m):"
+        is_opt_msg="\nLütfen şifreleme yöntemini seçin:\n"
+        is_opt_input_msg="(Varsayılan\e[92m $is_default_arg\e[0m):"
         is_ask_set=ss_method
         ;;
     set_header_type)
@@ -223,8 +223,8 @@ ask() {
             is_tmp_list=(none http)
             is_default_arg=none
         }
-        is_opt_msg="\n请选择伪装类型:\n"
-        is_opt_input_msg="(默认\e[92m $is_default_arg\e[0m):"
+        is_opt_msg="\nLütfen kamuflaj tipini seçin:\n"
+        is_opt_input_msg="(Varsayılan\e[92m $is_default_arg\e[0m):"
         is_ask_set=header_type
         [[ $is_use_header_type ]] && return
         ;;
@@ -236,7 +236,7 @@ ask() {
                 [[ $(grep -i tls$ <<<$v) ]] && is_tmp_list=(${is_tmp_list[@]} $v)
             done
         }
-        is_opt_msg="\n请选择协议:\n"
+        is_opt_msg="\nLütfen protokolü seçin:\n"
         is_ask_set=is_new_protocol
         ;;
     set_change_list)
@@ -244,7 +244,7 @@ ask() {
         for v in ${is_can_change[@]}; do
             is_tmp_list+=("${change_list[$v]}")
         done
-        is_opt_msg="\n请选择更改:\n"
+        is_opt_msg="\nLütfen değişikliği seçin:\n"
         is_ask_set=is_change_str
         is_opt_input_msg=$3
         ;;
@@ -260,7 +260,7 @@ ask() {
         ;;
     get_config_file)
         is_tmp_list=("${is_all_json[@]}")
-        is_opt_msg="\n请选择配置:\n"
+        is_opt_msg="\nLütfen konfigürasyonu seçin:\n"
         is_ask_set=is_config_file
         ;;
     mainmenu)
@@ -270,7 +270,7 @@ ask() {
         ;;
     esac
     msg $is_opt_msg
-    [[ ! $is_opt_input_msg ]] && is_opt_input_msg="请选择 [\e[91m1-${#is_tmp_list[@]}\e[0m]:"
+    [[ ! $is_opt_input_msg ]] && is_opt_input_msg="Lütfen seçin [\e[91m1-${#is_tmp_list[@]}\e[0m]:"
     [[ $is_tmp_list ]] && show_list "${is_tmp_list[@]}"
     while :; do
         echo -ne $is_opt_input_msg
@@ -283,39 +283,40 @@ ask() {
         if [[ ! $is_tmp_list ]]; then
             [[ $(grep port <<<$is_ask_set) ]] && {
                 [[ ! $(is_test port "$REPLY") ]] && {
-                    msg "$is_err 请输入正确的端口, 可选(1-65535)"
+                    msg "$is_err Lütfen doğru bir port girin, seçilebilir (1-65535)"
                     continue
                 }
                 if [[ $(is_test port_used $REPLY) && $is_ask_set != 'door_port' ]]; then
-                    msg "$is_err 无法使用 ($REPLY) 端口."
+                    msg "$is_err ($REPLY) portu kullanılamaz."
                     continue
                 fi
             }
             [[ $(grep path <<<$is_ask_set) && ! $(is_test path "$REPLY") ]] && {
                 [[ ! $tmp_uuid ]] && get_uuid
-                msg "$is_err 请输入正确的路径, 例如: /$tmp_uuid"
+                msg "$is_err Lütfen doğru bir yol girin, örneğin: /$tmp_uuid"
                 continue
             }
             [[ $(grep uuid <<<$is_ask_set) && ! $(is_test uuid "$REPLY") ]] && {
                 [[ ! $tmp_uuid ]] && get_uuid
-                msg "$is_err 请输入正确的 UUID, 例如: $tmp_uuid"
+                msg "$is_err Lütfen doğru bir UUID girin, örneğin: $tmp_uuid"
                 continue
             }
             [[ $(grep ^y$ <<<$is_ask_set) ]] && {
                 [[ $(grep -i ^y$ <<<"$REPLY") ]] && break
-                msg "请输入 (y)"
+                msg "Lütfen (y) girin"
                 continue
             }
-            [[ $REPLY ]] && export $is_ask_set=$REPLY && msg "使用: ${!is_ask_set}" && break
+            [[ $REPLY ]] && export $is_ask_set=$REPLY && msg "Kullanılıyor: ${!is_ask_set}" && break
         else
             [[ $(is_test number "$REPLY") ]] && is_ask_result=${is_tmp_list[$REPLY - 1]}
-            [[ $is_ask_result ]] && export $is_ask_set="$is_ask_result" && msg "选择: ${!is_ask_set}" && break
+            [[ $is_ask_result ]] && export $is_ask_set="$is_ask_result" && msg "Seçildi: ${!is_ask_set}" && break
         fi
 
-        msg "输入${is_err}"
+        msg "Giriş hatalı"
     done
     unset is_opt_msg is_opt_input_msg is_tmp_list is_ask_result is_default_arg is_emtpy_exit
 }
+
 
 # create file
 create() {
