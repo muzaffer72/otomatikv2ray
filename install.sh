@@ -1,7 +1,7 @@
 #!/bin/bash
 
 author=muzaffer72
-# github=https://github.com/muzaffer72/otomatikv2ray
+# github=https://github.com/muzaffer72/v2ray
 
 # bash yazı tipleri renkleri
 red='\e[31m'
