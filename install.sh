@@ -23,12 +23,18 @@ _red_bg() { echo -e "\e[41m$@${none}"; }
 is_err=$(_red_bg Hata!)
 is_warn=$(_red_bg Uyarı!)
 
+LOGFILE="/var/log/script.log"
+
+log() {
+    echo "$(date +'%Y-%m-%d %H:%M:%S') $1" | tee -a $LOGFILE
+}
+
 err() {
-    echo -e "\n$is_err $@\n" && exit 1
+    log "ERROR: $@" && exit 1
 }
 
 warn() {
-    echo -e "\n$is_warn $@\n"
+    log "WARNING: $@"
 }
 
 # root
@@ -120,6 +126,7 @@ msg() {
     esac
 
     echo -e "${color}$(date +'%T')${none}) ${2}"
+    log "${2}"
 }
 
 # yardım mesajı göster
