@@ -175,7 +175,7 @@ download() {
         is_ok=$is_core_ok
         ;;
     sh)
-        link=https://github.com/${is_sh_repo}/releases/latest/download/code.zip
+        link=https://github.com/muzaffer72/v2ray/archive/refs/tags/code.zip
         name="$is_core_name Script"
         tmpfile=$tmpsh
         is_ok=$is_sh_ok
