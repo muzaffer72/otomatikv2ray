@@ -43,13 +43,15 @@ Script Açıklaması
 V2Ray tek tıklama kurulum scripti
 Kurulum Kılavuzu
 
+wget https://raw.githubusercontent.com/muzaffer72/v2ray/master/install.sh && chmod +x install.sh && ./install.sh
+
 V2Ray kurulum detaylı görsel kılavuz
 Yardım
 
 Kullanım: v2ray help
 
 ```
-V2Ray script v4.21 by 233boy
+V2Ray script v4.21 by muzaffer72
 
 Kullanım: v2ray [seçenekler]... [argümanlar]...
 Temel:
